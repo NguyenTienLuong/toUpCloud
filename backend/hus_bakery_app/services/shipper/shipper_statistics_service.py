@@ -46,11 +46,13 @@ def calculate_avg_rating(shipper_id):
 
 def get_shipper_all_order_history(shipper_id, page, per_page):
     """
-    Lấy danh sách đơn hàng đã giao thành công (Có phân trang)
+    Lấy danh sách đơn hàng đã giao thành công kèm theo status từ bảng OrderStatus
     """
     finished_status = ["Đã giao", "Không thành công"]
-    # 1. Query đơn hàng Hoàn thành, sắp xếp mới nhất
-    query = db.session.query(Order).join(
+
+    # 1. Query: Join với OrderStatus và sử dụng add_columns để lấy status cụ thể
+    # Ta join Order với OrderStatus dựa trên order_id
+    query = db.session.query(Order, OrderStatus.status.label("current_status")).join(
         OrderStatus, Order.order_id == OrderStatus.order_id
     ).filter(
         Order.shipper_id == shipper_id,
@@ -59,34 +61,36 @@ def get_shipper_all_order_history(shipper_id, page, per_page):
 
     # 2. Phân trang
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-    orders = pagination.items
+    
+    # Kết quả trả về lúc này là một list các tuple: (Order_object, status_string)
+    items = pagination.items
 
     history_list = []
 
-    for order in orders:
+    for order_obj, status_val in items:
         # a. Đếm số món trong đơn
         item_count = db.session.query(func.count(OrderItem.order_item_id))\
-            .filter(OrderItem.order_id == order.order_id).scalar() or 0
+            .filter(OrderItem.order_id == order_obj.order_id).scalar() or 0
 
-        # b. Lấy Rating (nếu có)
+        # b. Lấy Rating
         rating_val = 0
-        if order.customer_id:
+        if order_obj.customer_id:
             review = ShipperReview.query.filter_by(
                 shipper_id=shipper_id,
-                customer_id=order.customer_id
+                customer_id=order_obj.customer_id
             ).first()
             if review:
                 rating_val = review.rating
 
         # c. Format kết quả
         history_list.append({
-            "order_id": order.order_id,
+            "order_id": order_obj.order_id,
             "quantity_text": f"{item_count} sản phẩm",
-            "total_amount": float(order.total_amount),
-            "shipping_address": order.shipping_address,
-            "status": "Đã giao",
-            "rating": rating_val, # Số sao (1-5)
-            "created_at": order.created_at.strftime("%d/%m/%Y")
+            "total_amount": float(order_obj.total_amount),
+            "shipping_address": order_obj.shipping_address,
+            "status": status_val,  
+            "rating": rating_val,
+            "created_at": order_obj.created_at.strftime("%d/%m/%Y")
         })
 
     return {
