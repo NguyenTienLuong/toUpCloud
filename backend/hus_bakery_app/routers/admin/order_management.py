@@ -3,7 +3,7 @@ import json
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from hus_bakery_app.models.branches import Branch
 from hus_bakery_app.services.admin.order_management_services import (
-    order_detail, delete_order,
+    get_order_detail_service, delete_order,
     get_all_orders_service
 )
 
@@ -30,22 +30,16 @@ def get_order_detail_api():
     if identity.get("role") != 'employee':
         return jsonify({"error": "Bạn không có quyền xem chi tiết đơn hàng"}), 403
 
-    # Tự động lấy branch_id của quản lý
-    branch_id = get_branch_id_from_token()
-    if not branch_id:
-        return jsonify({"error": "Nhân viên không quản lý chi nhánh nào"}), 404
-
     order_id = request.args.get('order_id')
-    if not order_id:
-        return jsonify({"error": "Vui lòng cung cấp order_id"}), 400
-
-    # Gọi service với cả order_id và branch_id để bảo mật
-    order_items = order_detail(order_id, branch_id)
-
-    if order_items is None:
-        return jsonify({"error": "Đơn hàng không thuộc chi nhánh bạn quản lý hoặc không tồn tại"}), 404
-
-    return jsonify(order_items), 200
+    print(f"DEBUG - order_id: {order_id}")
+    print(f"DEBUG - type(order_id): {type(order_id)}")
+    order_detail, msg = get_order_detail_service(order_id)
+    if not order_detail:
+        return jsonify({"error": msg}), 400
+    return jsonify({
+        "status": "success",
+        "data": order_detail
+    }), 200
 
 
 @order_admin_bp.route("/delete_order/<int:order_id>", methods=['DELETE'])
@@ -55,11 +49,8 @@ def delete_order_api(order_id):
     if identity.get("role") != 'employee':
         return jsonify({"error": "Bạn không có quyền xóa đơn hàng"}), 403
 
-    branch_id = get_branch_id_from_token()
-    if not branch_id:
-        return jsonify({"error": "Nhân viên không quản lý chi nhánh nào"}), 404
 
-    success = delete_order(order_id, branch_id)
+    success = delete_order(order_id)
     if success:
         return jsonify({"message": "Xóa đơn hàng thành công"}), 200
     return jsonify({"error": "Không tìm thấy đơn hàng hoặc bạn không có quyền xóa"}), 404

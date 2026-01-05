@@ -5,32 +5,47 @@ from hus_bakery_app.models.order_item import OrderItem
 from hus_bakery_app.models.products import Product
 from hus_bakery_app.models.customer import Customer
 from hus_bakery_app.models.order_status import OrderStatus
+from hus_bakery_app.models.shipper import Shipper
+from hus_bakery_app.models.branches import Branch
 
-def order_detail(order_id, branch_id):
-    # Lọc đơn hàng phải khớp cả order_id và branch_id của quản lý
-    order = Order.query.filter_by(order_id=order_id, branch_id=branch_id).first()
-    if not order:
-        return None
+def get_order_detail_service(order_id):
+    order = Order.query.filter_by(order_id=order_id).first()
+    if not order: return None, "Không tìm thấy đơn hàng"
 
-    results = (db.session.query(OrderItem, Product)
-               .join(Product, OrderItem.product_id == Product.product_id)
-               .filter(OrderItem.order_id == order_id)).all()
+    # Query items tối ưu hơn dùng loop
+    items_query = db.session.query(OrderItem, Product) \
+        .join(Product, OrderItem.product_id == Product.product_id) \
+        .filter(OrderItem.order_id == order_id).all()
 
-    order_items_list = []
-    for item, product in results:
-        order_items_list.append({
-            "product_name": product.name,
-            "quantity": item.quantity,
-            "price_at_purchase": float(item.price),
-            "total_item_price": float(item.price * item.quantity),
-            "branch": order.branch_id,
-            "image": product.avatar
+    items = []
+    for oi, p in items_query:
+        items.append({
+            "product_name": p.name,
+            "quantity": oi.quantity,
+            "price": float(p.unit_price),
+            "image": p.image_url
         })
-    return order_items_list
+    shipper = Shipper.query.filter_by(shipper_id=order.shipper_id).first()
+    getBranch = Branch.query.filter_by(branch_id=order.branch_id).first()
+    return {
+        "order_id": order.order_id,
+        "recipient_name": order.recipient_name,
+        "address": order.shipping_address,
+        "total_money": float(order.total_amount),
+        "note": order.note,
+        "payment_method": order.payment_method,
+        "items": items,
+        "phone": order.phone,
+        "branch_name": getBranch.name,
+        "created_at": order.created_at,
+        "shipper_id": order.shipper_id,
+        "shipper_name": shipper.name,
+    }, None
 
-def delete_order(order_id, branch_id):
+
+def delete_order(order_id):
     # Chỉ cho phép xóa nếu đơn hàng thuộc chi nhánh quản lý
-    order = Order.query.filter_by(order_id=order_id, branch_id=branch_id).first()
+    order = Order.query.filter_by(order_id=order_id).first()
     if order:
         db.session.delete(order)
         db.session.commit()
