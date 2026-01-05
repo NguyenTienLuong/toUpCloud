@@ -29,8 +29,8 @@ const { Title } = Typography;
 const MAX_VALUE = 100;
 
 const STATUS_COLOR = {
-  "Đã giao": "green",
-  "Không hoàn thành": "red",
+  "Đã giao": "#52c41a",
+  "Không thành công": "#c01108ff",
   "Đang giao": "orange",
 };
 export default function Dashboard() {
@@ -280,7 +280,9 @@ export default function Dashboard() {
                   columns={columns}
                   dataSource={filteredData}
                   rowKey="order_id"
-                  onChange={handleChange}
+                  onChange={(pagination, filters, sorter) =>
+                    setSortedInfo(sorter)
+                  }
                   pagination={false}
                   scroll={{ x: "max-content" }}
                   bordered

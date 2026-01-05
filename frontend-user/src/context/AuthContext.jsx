@@ -79,7 +79,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     tokenStorage.remove();
     setUser(null);
-    window.location.href = "/login";
+    navigate("/login", { replace: true });
   };
 
   if (loading) {
