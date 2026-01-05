@@ -48,7 +48,12 @@ def get_all_orders_service(branch_id):
             .join(Product, OrderItem.product_id == Product.product_id) \
             .filter(OrderItem.order_id == order.order_id).all()
 
-        status = OrderStatus.query.filter_by(order_id=order.order_id).first()
+        status = (
+    OrderStatus.query
+    .filter_by(order_id=order.order_id)
+    .order_by(desc(OrderStatus.updated_at))
+    .first()
+)
         # 3. Danh sách sản phẩm của đơn hàng này
       
 
