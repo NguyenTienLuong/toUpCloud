@@ -1,0 +1,174 @@
+/* ============================= */
+/* Location: src/components/StatsCard/StatsCard.css - REDESIGNED */
+/* ============================= */
+
+/* Base Card */
+.stats-card {
+  position: relative;
+  border-radius: 16px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e5e7eb !important;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: white !important;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Animated Gradient Top Border */
+.stats-card-gradient-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 16px 16px 0 0;
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Card Body */
+.stats-card .ant-card-body {
+  padding: 24px !important;
+}
+
+/* Wrapper */
+.stats-card-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Icon Section - Flat Design */
+.stats-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.stats-card:hover .stats-card-icon {
+  transform: scale(1.08);
+}
+
+/* Content Section */
+.stats-card-content {
+  flex: 1;
+}
+
+/* Override Ant Design Statistic */
+.stats-card .ant-statistic-title {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #9ca3af !important;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px !important;
+}
+
+.stats-card .ant-statistic-content {
+  line-height: 1 !important;
+}
+
+.stats-card .ant-statistic-content-value {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+}
+
+/* Change Badge */
+.stats-card-change {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.stats-card-change.positive {
+  color: #10b981;
+}
+
+.stats-card-change.negative {
+  color: #ef4444;
+}
+
+.change-value {
+  font-weight: 700;
+}
+
+.change-period {
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+/* ============================= */
+/* RESPONSIVE                    */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .stats-card .ant-card-body {
+    padding: 20px !important;
+  }
+
+  .stats-card-wrapper {
+    gap: 16px;
+  }
+
+  .stats-card-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .stats-card .ant-statistic-content-value {
+    font-size: 28px !important;
+  }
+
+  .stats-card .ant-statistic-title {
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-card .ant-card-body {
+    padding: 16px !important;
+  }
+
+  .stats-card-wrapper {
+    gap: 12px;
+  }
+
+  .stats-card-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .stats-card .ant-statistic-content-value {
+    font-size: 24px !important;
+  }
+
+  .stats-card .ant-statistic-title {
+    font-size: 10px !important;
+  }
+
+  .stats-card-change {
+    font-size: 12px;
+  }
+}

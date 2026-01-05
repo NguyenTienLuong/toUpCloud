@@ -1,0 +1,253 @@
+/* =============================================== */
+/* Location: src/pages/Admin/AdminView.css */
+/* =============================================== */
+
+/* ================= CONTAINER ================= */
+.admin-container {
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #1e293b;
+}
+
+/* ================= HEADER ================= */
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-page-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+}
+
+.admin-page-subtitle {
+  margin: 6px 0 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ================= SEARCH BOX ================= */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.search-input {
+  height: 40px;
+  padding: 0 16px 0 44px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  color: #1e293b;
+  width: 240px;
+}
+
+.search-input:focus {
+  border-color: #FFBD71;
+  box-shadow: 0 0 0 3px rgba(255, 189, 113, 0.1);
+}
+
+/* ================= TABLE CUSTOM ================= */
+.admin-container .ant-table {
+  font-size: 14px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-container .ant-table-thead > tr > th {
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 14px 16px;
+}
+
+.admin-container .ant-table-tbody > tr > td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-container .ant-table-tbody > tr:hover > td {
+  background: #fffbf5;
+}
+
+.admin-container .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+.admin-container .ant-pagination {
+  margin-top: 20px;
+}
+
+/* ================= FORCE REMOVE FIXED COLUMNS ================= */
+.admin-container .ant-table-cell-fix-left {
+  position: static !important;
+  background: transparent !important;
+}
+
+.admin-container .ant-table-cell-fix-left-first::after,
+.admin-container .ant-table-cell-fix-left-last::after {
+  display: none !important;
+}
+
+/* ================= ID - ĐỔI SANG MÀU ĐEN ================= */
+.admin-id {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  display: inline-block;
+}
+
+/* ================= ADMIN INFO - BỎ ICON VÀNG ================= */
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-name-text {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+/* ================= CONTACT INFO ================= */
+.contact-item-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1e293b;
+}
+
+.contact-item-text svg {
+  width: 16px;
+  height: 16px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+/* ================= BRANCH INFO ================= */
+.branch-info-text {
+  display: flex;
+  align-items: center;
+  color: #1e293b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.branch-info-text svg {
+  flex-shrink: 0;
+}
+
+/* ================= STATUS TAGS ================= */
+.admin-container .ant-tag {
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.admin-container .ant-tag-success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.admin-container .ant-tag-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-container .ant-tag-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .admin-page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+  }
+
+  .search-input {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 16px;
+  }
+
+  .admin-page-title {
+    font-size: 24px;
+  }
+
+  .admin-page-subtitle {
+    font-size: 13px;
+  }
+
+  .admin-header-actions {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-page-title {
+    font-size: 20px;
+  }
+
+  .admin-info {
+    gap: 8px;
+  }
+
+  .contact-item-text {
+    font-size: 12px;
+  }
+}

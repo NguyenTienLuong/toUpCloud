@@ -1,0 +1,45 @@
+/* Layout chính */
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: #f7f7f8;
+  overflow: hidden; /* ngăn tràn ngang */
+}
+
+/* Phần main (Header + Content) */
+.layout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;      /* Thêm scroll cho toàn bộ layout-main */
+  overflow-x: hidden;
+  position: relative;    /* Thêm position relative */
+}
+
+/* Header: cố định trên cùng khi cuộn */
+.layout-main .header-container {
+  height: 75px;
+  flex-shrink: 0;
+  position: sticky;      /* sticky để header luôn ở trên khi cuộn */
+  top: 0;
+  z-index: 300;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Nội dung: KHÔNG cần scroll riêng nữa */
+.layout-content {
+  flex: 1;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+  .layout-main .header-container {
+    height: 60px;
+  }
+}
